@@ -10,17 +10,21 @@
     "prepublish": "tsdown",
     "release": "release-it"
   },
-  "main": "./dist/cjs/index.cjs",
-  "types": "./dist/cjs/index.d.cts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.mjs",
-      "types": "./dist/esm/index.d.mts"
+      "import": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "require": {
+        "default": "./dist/index.cjs",
+        "types": "./dist/index.d.cts"
+      }
     },
     "./package.json": "./package.json"
   },
   "devDependencies": {
-    "tsdown": "^0.16.1",
+    "tsdown": "^0.18.4",
     "typescript": "^5.9.3",
     "vitest": "^4.0.8",
     "@release-it/conventional-changelog": "^10.0.1",
