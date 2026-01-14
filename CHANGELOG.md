@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.2](https://github.com/peiyanlu/ts-utils/compare/v0.0.1...v0.0.2) (2026-01-14)
+
+### ✨ Features | 新功能
+
+* 类型补充、工具补充 ([2ec2f1b](https://github.com/peiyanlu/ts-utils/commit/2ec2f1b6845a56a1b8f086e25c75a55942e34bfc))
+
 ## 0.0.1 (2025-11-11)
 
 ### ✨ Features | 新功能
