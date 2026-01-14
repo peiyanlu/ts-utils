@@ -45,10 +45,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "files": [
-    "dist",
-    "LICENSE",
-    "package.json",
-    "README.md"
+    "dist"
   ],
   "keywords": [
     "typescript",

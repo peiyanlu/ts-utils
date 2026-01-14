@@ -1,4 +1,4 @@
-import { defineConfig, UserConfig } from 'tsdown'
+import { defineConfig, type UserConfig } from 'tsdown'
 
 
 const config: UserConfig[] = defineConfig([
@@ -6,15 +6,13 @@ const config: UserConfig[] = defineConfig([
     entry: 'src/index.ts',
     format: 'cjs',
     outDir: 'dist/cjs',
-    nodeProtocol: true,
-    shims: true,
+    platform: 'neutral',
   },
   {
     entry: 'src/index.ts',
     format: 'esm',
     outDir: 'dist/esm',
-    nodeProtocol: true,
-    shims: true,
+    platform: 'neutral',
   },
 ] satisfies UserConfig[])
 
