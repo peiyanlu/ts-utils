@@ -2,17 +2,15 @@ import type { AnyFunction, Constructor, Promisified } from './types.js'
 
 
 /** 安全判断对象是否为特定类实例 */
-export function isInstanceOf<T>(obj: any, constructor: Constructor<T>): boolean {
-  return typeof obj === 'object' && obj instanceof constructor
-}
+export const isInstanceOf = <T>(obj: any, constructor: Constructor<T>): boolean =>
+  typeof obj === 'object' && obj instanceof constructor
 
 /** 安全转换对象为特定类实例 */
-export function asInstanceOf<T>(obj: any, constructor: Constructor<T>): T | undefined {
-  return isInstanceOf<T>(obj, constructor) ? obj as T : undefined
-}
+export const asInstanceOf = <T>(obj: any, constructor: Constructor<T>): T | undefined =>
+  isInstanceOf<T>(obj, constructor) ? obj as T : undefined
 
 /** 运行时删除对象指定属性（浅拷贝） */
-export function omit<T extends {}, K extends readonly (keyof T)[]>(t: T, keys: K): Omit<T, K[number]> {
+export const omit = <T extends {}, K extends readonly (keyof T)[]>(t: T, keys: K): Omit<T, K[number]> => {
   const clone = { ...t }
   for (const key of keys) {
     delete clone[key]
@@ -22,7 +20,7 @@ export function omit<T extends {}, K extends readonly (keyof T)[]>(t: T, keys: K
 
 
 /** 运行时挑选对象指定属性（浅拷贝） */
-export function pick<T extends {}, K extends readonly (keyof T)[]>(obj: T, keys: K): Pick<T, K[number]> {
+export const pick = <T extends {}, K extends readonly (keyof T)[]>(obj: T, keys: K): Pick<T, K[number]> => {
   const clone = {} as Pick<T, K[number]>
   for (const key of keys) {
     if (key in obj) {
@@ -36,20 +34,16 @@ export function pick<T extends {}, K extends readonly (keyof T)[]>(obj: T, keys:
 export const toString = (self: unknown) => Object.prototype.toString.call(self)
 
 /** 判断一个值是否为函数（即 `[object Function]`） */
-const isFunction = (v: unknown) => toString(v) === '[object Function]'
+export const isFunction = (v: unknown) => toString(v) === '[object Function]'
 
 /** 判断一个值是否为异步函数（即 `[object AsyncFunction]`） */
-const isAsyncFunction = (v: unknown) => toString(v) === '[object AsyncFunction]'
+export const isAsyncFunction = (v: unknown) => toString(v) === '[object AsyncFunction]'
 
 /** 判断一个值是否为普通对象（即 `[object Object]`） */
-export function isPlainObject(value: unknown): value is object {
-  return toString(value) === '[object Object]'
-}
+export const isPlainObject = (value: unknown): value is object => toString(value) === '[object Object]'
 
 /** 判断对象是否为空对象（无自身可枚举属性） */
-export function isEmptyObject(obj: object): boolean {
-  return Object.keys(obj).length === 0 && obj.constructor === Object
-}
+export const isEmptyObject = (obj: object): boolean => Object.keys(obj).length === 0 && obj.constructor === Object
 
 /** 同步函数转为异步 */
 export const promisify = <T extends AnyFunction>(fn: T): Promisified<T> => {
