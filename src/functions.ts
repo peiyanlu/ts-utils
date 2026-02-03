@@ -1,9 +1,15 @@
 import type { AnyFunction, Constructor, Promisified } from './types.js'
 
 
+/** 判断一个值是否为 Object */
+export const isObject = (v: unknown) => typeof v === 'object'
+
+/** 判断一个值是否为函数 */
+export const isFunction = (v: unknown) => typeof v === 'function'
+
 /** 安全判断对象是否为特定类实例 */
 export const isInstanceOf = <T>(obj: any, constructor: Constructor<T>): boolean =>
-  typeof obj === 'object' && obj instanceof constructor
+  isObject(obj) && obj instanceof constructor
 
 /** 安全转换对象为特定类实例 */
 export const asInstanceOf = <T>(obj: any, constructor: Constructor<T>): T | undefined =>
@@ -17,7 +23,6 @@ export const omit = <T extends {}, K extends readonly (keyof T)[]>(t: T, keys: K
   }
   return clone
 }
-
 
 /** 运行时挑选对象指定属性（浅拷贝） */
 export const pick = <T extends {}, K extends readonly (keyof T)[]>(obj: T, keys: K): Pick<T, K[number]> => {
@@ -33,8 +38,8 @@ export const pick = <T extends {}, K extends readonly (keyof T)[]>(obj: T, keys:
 /** Object 实例自身的方法 */
 export const toString = (self: unknown) => Object.prototype.toString.call(self)
 
-/** 判断一个值是否为函数（即 `[object Function]`） */
-export const isFunction = (v: unknown) => toString(v) === '[object Function]'
+/** 判断一个值是否为同步函数（即 `[object Function]`） */
+export const isSyncFunction = (v: unknown) => toString(v) === '[object Function]'
 
 /** 判断一个值是否为异步函数（即 `[object AsyncFunction]`） */
 export const isAsyncFunction = (v: unknown) => toString(v) === '[object AsyncFunction]'
@@ -106,4 +111,21 @@ export const upperFirst = (string: string) => {
 /** 参数数组化 */
 export const castArray = <T = unknown>(arr: T | T[]) => {
   return Array.isArray(arr) ? arr : [ arr ]
+}
+
+/** 对对象的 value 进行统一映射转换 */
+export const mapObjectValues = <
+  T extends Record<PropertyKey, unknown>,
+  R,
+  K extends readonly (keyof T)[]
+>(obj: T, mapper: (value: T[keyof T], key: keyof T) => R, keys?: K): { [K in keyof T]: R } => {
+  return Object.fromEntries(
+    Object
+      .entries(obj)
+      .filter(([ k, _v ]) => keys?.includes(k))
+      .map(([ k, v ]) => [
+        k,
+        mapper(v as T[keyof T], k as keyof T),
+      ]),
+  ) as { [K in keyof T]: R }
 }
