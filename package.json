@@ -25,10 +25,10 @@
   },
   "devDependencies": {
     "@peiyanlu/release": "^0.0.7",
-    "@types/node": "^22.15.23",
-    "tsdown": "^0.18.4",
+    "@types/node": "^25.2.0",
+    "tsdown": "^0.20.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.18"
   },
   "author": {
     "name": "YanluPei",
