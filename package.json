@@ -24,11 +24,11 @@
     "./package.json": "./package.json"
   },
   "devDependencies": {
-    "@peiyanlu/release": "^0.0.7",
-    "@types/node": "^25.2.0",
-    "tsdown": "^0.20.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "@peiyanlu/release": "^0.0.8",
+    "@types/node": "^25.5.2",
+    "tsdown": "^0.21.7",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.3"
   },
   "author": {
     "name": "YanluPei",
