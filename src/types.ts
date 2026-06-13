@@ -148,3 +148,10 @@ export type DeepPartial<T> =
           : T extends object
             ? { [K in keyof T]?: DeepPartial<T[K]> }
             : T
+
+/** 将对象中的所有函数类型转换为异步函数 */
+export type Asyncify<T> = {
+  [K in keyof T]: T[K] extends (...args: infer A) => infer R
+    ? (...args: A) => Promise<Awaited<R>>
+    : T[K]
+}

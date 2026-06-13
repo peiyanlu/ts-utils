@@ -103,6 +103,9 @@ export const isUndefined = (val: unknown): val is undefined => undefined === val
 /** null 值判断 */
 export const isNull = (val: unknown): val is null => null === val
 
+/** 0 值判断 */
+export const isZero = (val: number): val is 0 => 0 === val
+
 /** 大写字符串的首字符 */
 export const upperFirst = (string: string) => {
   return string ? string.charAt(0).toUpperCase() + string.slice(1) : ''
@@ -113,7 +116,7 @@ export const castArray = <T = unknown>(arr: T | T[]) => {
   return Array.isArray(arr) ? arr : [ arr ]
 }
 
-/** 对对象的 value 进行统一映射转换 */
+/** 映射对象中指定属性的 value，并返回新的对象 */
 export const mapObjectValues = <
   T extends Record<PropertyKey, unknown>,
   R,
@@ -122,10 +125,54 @@ export const mapObjectValues = <
   return Object.fromEntries(
     Object
       .entries(obj)
-      .filter(([ k, _v ]) => keys?.includes(k))
-      .map(([ k, v ]) => [
-        k,
-        mapper(v as T[keyof T], k as keyof T),
-      ]),
+      .filter(([ k, _v ]) => keys ? keys.includes(k as keyof T) : true)
+      .map(([ k, v ]) => [ k, mapper(v as T[keyof T], k as keyof T) ]),
   ) as { [K in keyof T]: R }
+}
+
+/** 映射对象的键和值，并返回新的对象 */
+export const mapObject = <
+  T extends Record<PropertyKey, unknown>,
+  K extends PropertyKey,
+  V,
+>(obj: T, mapper: <P extends keyof T>(key: P, value: T[P]) => [ K, V ]): Record<K, V> => {
+  return Object.fromEntries(
+    Object
+      .entries(obj)
+      .map(([ key, value ]) => mapper(key as keyof T, value as T[keyof T])),
+  ) as Record<K, V>
+}
+
+/** 过滤数组中的 undefined 值 */
+export const noneUndefined = <T>(arr: readonly T[]): Exclude<T, undefined>[] => {
+  return arr.filter((e): e is Exclude<T, undefined> => e !== undefined)
+}
+
+/** 过滤数组中的 null 值 */
+export const noneNull = <T>(arr: readonly T[]): Exclude<T, null>[] => {
+  return arr.filter((e): e is Exclude<T, null> => e !== null)
+}
+
+/** 过滤数组中的 null 和 undefined 值 */
+export const noneNullable = <T>(arr: readonly T[],): NonNullable<T>[] => {
+  return arr.filter((e): e is NonNullable<T> => e !== null && e !== undefined,)
+}
+
+/** ArrayBuffer → Uint8Array */
+export const arrayBufferToUint8 = (arrayBuffer: ArrayBuffer): Uint8Array => {
+  return new Uint8Array(arrayBuffer.slice())
+}
+
+/** Uint8Array → ArrayBuffer (copy-safe) */
+export const uint8ToArrayBuffer = (uint8: Uint8Array): ArrayBuffer => {
+  const data = new Uint8Array(uint8)
+  return data.buffer.slice(
+    data.byteOffset,
+    data.byteOffset + data.byteLength,
+  )
+}
+
+/** 复制为 uint8 */
+export const safeUint8 = (data: ArrayBuffer | Uint8Array): Uint8Array => {
+  return data instanceof Uint8Array ? data.slice() : new Uint8Array(data.slice())
 }

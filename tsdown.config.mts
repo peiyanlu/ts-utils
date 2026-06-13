@@ -9,6 +9,13 @@ const config: UserConfig[] = defineConfig([
     platform: 'neutral',
     dts: true,
   },
+  {
+    entry: 'src/node.ts',
+    format: [ 'esm', 'cjs' ],
+    outDir: 'dist',
+    platform: 'node',
+    dts: true,
+  },
 ] satisfies UserConfig[])
 
 export default config
