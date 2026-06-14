@@ -1,3 +1,23 @@
+## <small>[0.0.6](https://github.com/peiyanlu/ts-utils/compare/v0.0.5...v0.0.6) (2026-06-14)</small>
+
+### ✨ 新功能
+
+* 工具补充 ([34d4bb6](https://github.com/peiyanlu/ts-utils/commit/34d4bb6d24e9fd411f0de44a0e86d79f68e4a83b))
+
+### 🔧 CI 配置
+
+* 更换 release 工具 ([c03b505](https://github.com/peiyanlu/ts-utils/commit/c03b5059c092eea3a567a3f30c9a08968245a0e7))
+
+### 🔨 配置
+
+* 升级 tsconfig ([6a158d2](https://github.com/peiyanlu/ts-utils/commit/6a158d22b7880f23c2e6afa22d23af1b88b8fcea))
+
+### 🔗 依赖更新
+
+* 升级依赖 ([0c62b8f](https://github.com/peiyanlu/ts-utils/commit/0c62b8fcf6143186640b9ac95a97feadc569d184))
+* 升级依赖 ([195839c](https://github.com/peiyanlu/ts-utils/commit/195839c4a4dd8edb1afbf141d5e76e3affad4c8c))
+
+
 ## <small>[0.0.5](https://github.com/peiyanlu/ts-utils/compare/v0.0.4...v0.0.5) (2026-02-03)</small>
 
 ### ✨ 新功能
