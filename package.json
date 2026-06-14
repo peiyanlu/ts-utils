@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsdown",
     "test": "vitest",
-    "prepublish": "tsdown",
+    "prepublishOnly": "tsdown",
     "release": "release"
   },
   "exports": {
