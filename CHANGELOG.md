@@ -1,3 +1,10 @@
+## <small>[0.0.7](https://github.com/peiyanlu/ts-utils/compare/v0.0.6...v0.0.7) (2026-06-14)</small>
+
+### 🐛 Bug 修复
+
+* 修复发布前未触发编译命令 ([74bc3b8](https://github.com/peiyanlu/ts-utils/commit/74bc3b8f88d39747c7cdc3a8f62cbf9dc2176a3a))
+
+
 ## <small>[0.0.6](https://github.com/peiyanlu/ts-utils/compare/v0.0.5...v0.0.6) (2026-06-14)</small>
 
 ### ✨ 新功能
