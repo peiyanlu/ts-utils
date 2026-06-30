@@ -34,11 +34,11 @@
     "./package.json": "./package.json"
   },
   "devDependencies": {
-    "@peiyanlu/release": "^0.0.14",
+    "@peiyanlu/release": "^0.0.16",
     "@types/node": "^24.13.2",
-    "tsdown": "^0.22.2",
-    "typescript": "^6.0.2",
-    "vitest": "^4.1.8"
+    "tsdown": "^0.22.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   },
   "author": {
     "name": "YanluPei",

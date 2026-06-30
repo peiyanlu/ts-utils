@@ -144,18 +144,23 @@ export const mapObject = <
 }
 
 /** 过滤数组中的 undefined 值 */
-export const noneUndefined = <T>(arr: readonly T[]): Exclude<T, undefined>[] => {
+export const nonUndefined = <T>(arr: readonly T[]): Exclude<T, undefined>[] => {
   return arr.filter((e): e is Exclude<T, undefined> => e !== undefined)
 }
 
 /** 过滤数组中的 null 值 */
-export const noneNull = <T>(arr: readonly T[]): Exclude<T, null>[] => {
+export const nonNull = <T>(arr: readonly T[]): Exclude<T, null>[] => {
   return arr.filter((e): e is Exclude<T, null> => e !== null)
 }
 
 /** 过滤数组中的 null 和 undefined 值 */
-export const noneNullable = <T>(arr: readonly T[],): NonNullable<T>[] => {
-  return arr.filter((e): e is NonNullable<T> => e !== null && e !== undefined,)
+export const nonNullable = <T>(arr: readonly T[]): NonNullable<T>[] => {
+  return arr.filter((e): e is NonNullable<T> => e !== null && e !== undefined)
+}
+
+/** 断值不是 null/undefined */
+export function isNonNullable<T>(value: T): value is NonNullable<T> {
+  return value !== null && value !== undefined
 }
 
 /** ArrayBuffer → Uint8Array */
@@ -176,3 +181,20 @@ export const uint8ToArrayBuffer = (uint8: Uint8Array): ArrayBuffer => {
 export const safeUint8 = (data: ArrayBuffer | Uint8Array): Uint8Array => {
   return data instanceof Uint8Array ? data.slice() : new Uint8Array(data.slice())
 }
+
+/** 判断两个值相等 */
+export const equals = <A, B extends A>(a: A, b: B) => a === b
+
+/** 判断两个值不等 */
+export const notEquals = <A, B extends A>(a: A, b: B) => a !== b
+
+/** 创建范围随机函数 */
+export const createRandom = (rng = Math.random) => {
+  return (min: number, max: number) => {
+    if (min > max) [ min, max ] = [ max, min ]
+    return Math.floor(rng() * (max - min + 1)) + min
+  }
+}
+
+/** 多空格函数 */
+export const space = (n: number = 1) => ' '.repeat(n)
