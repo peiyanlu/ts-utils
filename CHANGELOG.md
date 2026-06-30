@@ -1,3 +1,9 @@
+## <small>[0.0.8](https://github.com/peiyanlu/ts-utils/compare/v0.0.7...v0.0.8) (2026-06-30)</small>
+
+### ✨ 新功能
+
+* 工具补充 ([f201270](https://github.com/peiyanlu/ts-utils/commit/f201270a7b90d18d1ff33a6dd47c29ccbade3a2b))
+
 ## <small>[0.0.7](https://github.com/peiyanlu/ts-utils/compare/v0.0.6...v0.0.7) (2026-06-14)</small>
 
 ### 🐛 Bug 修复
