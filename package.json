@@ -5,10 +5,12 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "dev": "tsdown -w",
     "build": "tsdown",
-    "test": "vitest",
     "prepublishOnly": "tsdown",
-    "release": "release"
+    "release": "release",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage"
   },
   "exports": {
     ".": {
@@ -31,14 +33,25 @@
         "default": "./dist/node.cjs"
       }
     },
+    "./web": {
+      "import": {
+        "types": "./dist/web.d.ts",
+        "default": "./dist/web.js"
+      },
+      "require": {
+        "types": "./dist/web.d.cts",
+        "default": "./dist/web.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "devDependencies": {
-    "@peiyanlu/release": "^0.0.16",
+    "@peiyanlu/release": "^1.1.1",
     "@types/node": "^24.13.2",
-    "tsdown": "^0.22.3",
+    "tsdown": "^0.22.4",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10",
+    "@vitest/coverage-v8": "^4.1.10"
   },
   "author": {
     "name": "YanluPei",
@@ -46,7 +59,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com:peiyanlu/ts-utils.git"
+    "url": "git+https://github.com/peiyanlu/ts-utils.git"
   },
   "homepage": "https://github.com/peiyanlu/ts-utils",
   "bugs": {
@@ -61,11 +74,8 @@
   ],
   "keywords": [
     "typescript",
-    "utility",
-    "types",
-    "helpers",
-    "omit",
-    "instanceof"
+    "utils",
+    "types"
   ],
   "engines": {
     "node": ">=20.0.0"
