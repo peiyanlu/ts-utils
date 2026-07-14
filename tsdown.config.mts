@@ -8,20 +8,7 @@ const config: UserConfig[] = defineConfig([
     outDir: 'dist',
     platform: 'neutral',
     dts: true,
-  },
-  {
-    entry: 'src/node.ts',
-    format: [ 'esm', 'cjs' ],
-    outDir: 'dist',
-    platform: 'node',
-    dts: true,
-  },
-  {
-    entry: 'src/web.ts',
-    format: [ 'esm', 'cjs' ],
-    outDir: 'dist',
-    platform: 'browser',
-    dts: true,
+    publint: true,
   },
 ] satisfies UserConfig[])
 
