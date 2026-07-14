@@ -1,6 +1,11 @@
-import { AnyFunction } from './function.js'
-import { Builtin } from './primitive.js'
+import type { AnyFunction } from './function.js'
+import type { Builtin } from './primitive.js'
 
+
+/** 简化包装类型 */
+export type Simplify<T extends object> = {
+  [K in keyof T]: T[K]
+} & {}
 
 /** 移除 readonly 修饰符 */
 export type Mutable<T> = {
@@ -8,25 +13,20 @@ export type Mutable<T> = {
 };
 
 /** 指定属性可选 */
-export type MarkOptional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+export type MarkOptional<T, K extends keyof T> = Simplify<Pick<Partial<T>, K> & Omit<T, K>>;
 
 /** 指定属性必填 */
-export type MarkRequired<T, K extends keyof T> = Pick<Required<T>, K> & Omit<T, K>;
+export type MarkRequired<T, K extends keyof T> = Simplify<Pick<Required<T>, K> & Omit<T, K>>;
 
 /** 至少包含一个属性（非空对象约束） */
 export type RequireAtLeastOne<T> = {
-  [K in keyof T]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>;
+  [K in keyof T]-?: Simplify<Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>>;
 }[keyof T];
 
 /** 对象类型转可索引对象类型 */
 export type Indexable<T> = {
   [K in keyof T]: T[K]
 }
-
-/** 简化包装类型 */
-export type Simplify<T extends object> = {
-  [K in keyof T]: T[K]
-} & {}
 
 /** 递归 Partial */
 export type DeepPartial<T> =
@@ -65,3 +65,6 @@ export type DeepRequired<T> =
           : T extends object
             ? { [K in keyof T]-?: DeepRequired<T[K]> }
             : T
+
+/** 以字符串为键的字典对象 */
+export type Dict<T = unknown> = Record<string, T>

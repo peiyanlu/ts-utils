@@ -1,4 +1,4 @@
-import { AnyFunction, Promisified } from '../types/index.js'
+import type { AnyFunction, Promisified } from '../types/index.js'
 
 
 /** 仅执行一次的方法 */

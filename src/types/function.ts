@@ -7,6 +7,9 @@ export type AnyFunction = (...args: any[]) => any;
 /** 任意返回 Promise 的函数 */
 export type AsyncFunction = (...args: any[]) => Promise<any>;
 
+/** 无参数回调 */
+export type Callback = () => void;
+
 /** 类构造函数类型 */
 export type Class<T> = new (...args: any[]) => T;
 

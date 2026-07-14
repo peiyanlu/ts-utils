@@ -1,15 +1,15 @@
 /** 判断两个值相等 */
-export const equals = <A, B>(a: A, b: B) => Object.is(a, b)
+export const equals = <A, B>(a: A, b: B): boolean => Object.is(a, b)
 
 /** 判断两个值不等 */
-export const notEquals = <A, B>(a: A, b: B) => !Object.is(a, b)
+export const notEquals = <A, B>(a: A, b: B): boolean => !Object.is(a, b)
 
 /** 判断两个数组内容是否相同 */
 export const arrayEquals = <T, K extends string | number | bigint = never>(
   a1: readonly T[],
   a2: readonly T[],
   key?: (item: T) => K,
-) => {
+): boolean => {
   if (a1.length !== a2.length) return false
   
   if (!key) {

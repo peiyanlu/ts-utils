@@ -1,4 +1,4 @@
-import { Class, Simplify, StringKeyOf } from '../types/index.js'
+import type { Class, Simplify, StringKeyOf } from '../types/index.js'
 import { isInstanceOf } from './is.js'
 
 
@@ -35,10 +35,10 @@ export const pick = <
 }
 
 /** Object 实例自身的方法 */
-export const toString = (self: unknown) => Object.prototype.toString.call(self)
+export const toString = (self: unknown): string => Object.prototype.toString.call(self)
 
 /** 类型化实体 */
-export const typedEntries = <T extends object>(obj: T) =>
+export const typedEntries = <T extends object>(obj: T): { [P in StringKeyOf<T>]: [ P, T[P] ]; }[StringKeyOf<T>][] =>
   Object.entries(obj) as { [P in StringKeyOf<T>]: [ P, T[P] ] }[StringKeyOf<T>][]
 
 /** 映射对象的键和值，并返回新的对象 */
@@ -51,7 +51,7 @@ export const mapObject = <
   obj: T,
   mapper: <P extends S>(key: P, value: T[P]) => [ R, V ],
   keys?: readonly S[],
-) => {
+): { [P in R]: V; } => {
   const result = {} as { [P in R]: V }
   const selectedKeys = keys ?? (Object.keys(obj) as S[])
   

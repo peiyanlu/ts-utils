@@ -1,19 +1,19 @@
 /** 大写字符串的首字符 */
-export const upperFirst = (string: string) => {
+export const upperFirst = (string: string): string => {
   return string ? string.charAt(0).toUpperCase() + string.slice(1) : ''
 }
 
 /** 多空格函数 */
-export const space = (n: number = 1) => ' '.repeat(Math.abs(n))
+export const space = (n: number = 1): string => ' '.repeat(Math.abs(n))
 
 /** 去掉模板首尾空行 */
-export const trimTemplate = (str: string) => str.replace(/^\s*\n+|\n+\s*$/g, '')
+export const trimTemplate = (str: string): string => str.replace(/^\s*\n+|\n+\s*$/g, '')
 
 /** 按行拆分 */
-export const splitLines = (text: string) => text.split(/\r?\n/)
+export const splitLines = (text: string): string[] => text.split(/\r?\n/)
 
 /** 按行拆分（过滤空行） */
-export const splitNonEmptyLines = (text: string) => splitLines(text).filter(Boolean)
+export const splitNonEmptyLines = (text: string): string[] => splitLines(text).filter(Boolean)
 
 /** 折叠连续空白行 */
 export const collapseBlankLines = (str: string, opts: { threshold?: number; preserve?: number } = {}): string => {
@@ -27,4 +27,4 @@ export const collapseBlankLines = (str: string, opts: { threshold?: number; pres
 }
 
 /** 生成一个或多个换行 */
-export const newline = (n = 1) => '\n'.repeat(Math.abs(n))
+export const newline = (n = 1): string => '\n'.repeat(Math.abs(n))

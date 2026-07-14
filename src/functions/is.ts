@@ -1,4 +1,4 @@
-import { Class } from '../types/index.js'
+import type { Class } from '../types/index.js'
 import { toString } from './object.js'
 
 
@@ -25,13 +25,13 @@ export const isEmptyString = (v: string): boolean => isZero(v.length)
 export const isEmptyArray = <T>(v: readonly T[]): boolean => isZero(v.length)
 
 /** 判断一个值是否为函数 */
-export const isFunction = (v: unknown) => typeof v === 'function'
+export const isFunction = (v: unknown): v is Function => typeof v === 'function'
 
 /** 判断一个值是否为同步函数（即 `[object Function]`） */
-export const isSyncFunction = (v: unknown) => toString(v) === '[object Function]'
+export const isSyncFunction = (v: unknown): boolean => toString(v) === '[object Function]'
 
 /** 判断一个值是否为异步函数（即 `[object AsyncFunction]`） */
-export const isAsyncFunction = (v: unknown) => toString(v) === '[object AsyncFunction]'
+export const isAsyncFunction = (v: unknown): boolean => toString(v) === '[object AsyncFunction]'
 
 /** undefined 值判断 */
 export const isUndefined = (v: unknown): v is undefined => undefined === v
@@ -43,7 +43,7 @@ export const isNull = (v: unknown): v is null => null === v
 export const isZero = (v: number): v is 0 => 0 === v
 
 /** -1 值判断 */
-export const isIndex = (v: number) => -1 < v
+export const isIndex = (v: number): boolean => -1 < v
 
 /** 断值不是 null/undefined */
 export const isNonNullable = <T>(v: T): v is NonNullable<T> => v !== null && v !== undefined

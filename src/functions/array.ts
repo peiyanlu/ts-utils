@@ -1,6 +1,6 @@
 /** 参数数组化 */
-export const castArray = <T>(v: T | readonly T[]) => {
-  return Array.isArray(v) ? v : [ v ]
+export const castArray = <T>(v: T | readonly T[]): T[] => {
+  return Array.isArray(v) ? [ ...v ] : [ v as T ]
 }
 
 /** 过滤数组中的 undefined 值 */
@@ -19,7 +19,7 @@ export const nonNullable = <T>(arr: readonly T[]): NonNullable<T>[] => {
 }
 
 /** 按固定大小分组数组元素 */
-export const chunk = <T>(arr: readonly T[], size: number) => {
+export const chunk = <T>(arr: readonly T[], size: number): T[][] => {
   if (size <= 0) return []
   
   return arr
@@ -33,7 +33,7 @@ export const chunk = <T>(arr: readonly T[], size: number) => {
 }
 
 /** 按固定间隔替换数组元素 */
-export const replaceEvery = <T, V = T>(arr: readonly T[], step: number, val: V) => {
+export const replaceEvery = <T, V = T>(arr: readonly T[], step: number, val: V): (T | V)[] => {
   if (step <= 0) return []
   
   return arr.map((v, i) => (i + 1) % step === 0 ? val : v)
