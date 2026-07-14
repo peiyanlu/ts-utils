@@ -1,3 +1,13 @@
+## <small>[0.0.10](https://github.com/peiyanlu/ts-utils/compare/v0.0.9...v0.0.10) (2026-07-14)</small>
+
+### 🐛 Bug 修复
+
+* 移除平台相关 API ([61c757b](https://github.com/peiyanlu/ts-utils/commit/61c757b8f5f5395b3b13374b18d8c59dc731f1de))
+
+### ♻️ 代码重构
+
+* 添加显式返回类型 ([0942cce](https://github.com/peiyanlu/ts-utils/commit/0942cce2441c734283fb56d596c6f1e390c8ed26))
+
 ## <small>[0.0.9](https://github.com/peiyanlu/ts-utils/compare/v0.0.8...v0.0.9) (2026-07-09)</small>
 
 ### ♻️ 代码重构
