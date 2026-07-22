@@ -38,3 +38,18 @@ export const replaceEvery = <T, V = T>(arr: readonly T[], step: number, val: V):
   
   return arr.map((v, i) => (i + 1) % step === 0 ? val : v)
 }
+
+export const partition = <T>(arr: readonly T[], predicate: (item: T) => boolean): [ T[], T[] ] => {
+  const matched: T[] = []
+  const unmatched: T[] = []
+  
+  for (const item of arr) {
+    if (predicate(item)) {
+      matched.push(item)
+    } else {
+      unmatched.push(item)
+    }
+  }
+  
+  return [ matched, unmatched ]
+}

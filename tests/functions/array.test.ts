@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { castArray, chunk, nonNull, nonNullable, nonUndefined, replaceEvery } from '../../src/index.js'
+import { castArray, chunk, nonNull, nonNullable, nonUndefined, partition, replaceEvery } from '../../src/index.js'
 
 
 it('castArray', () => {
@@ -38,4 +38,13 @@ it('replaceEvery', () => {
   expect(replaceEvery(arr, arr.length + 100, 1)).toStrictEqual([ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 ])
   expect(replaceEvery(arr, 0, 1)).toStrictEqual([])
   expect(replaceEvery(arr, -1, 1)).toStrictEqual([])
+})
+
+it('partition', () => {
+  const arr = [ 1, 2, 2, 3, 4, 4, 5, 5 ]
+  
+  expect(partition(arr, v => v % 2 === 0))
+    .toStrictEqual(expect.arrayContaining([ [ 2, 2, 4, 4 ], [ 1, 3, 5, 5 ] ]))
+  expect(partition(arr, v => v > 3))
+    .toStrictEqual(expect.arrayContaining([ [ 4, 4, 5, 5 ], [ 1, 2, 2, 3 ] ]))
 })

@@ -1,4 +1,5 @@
-import type { AnyFunction, Promisified } from '../types/index.js'
+import type { AnyFunction, MaybePromise, Promisified } from '../types/index.js'
+import { isFunction } from './is.js'
 
 
 /** 仅执行一次的方法 */
@@ -50,5 +51,53 @@ export const promisify = <T extends AnyFunction>(fn: T): Promisified<T> => {
         reject(e)
       }
     })
+  }
+}
+
+/** 安全调用函数，异常时返回 undefined */
+export const tryCall = async <T, F>(
+  fn: () => MaybePromise<T>,
+  fallback: F | ((error: unknown) => F),
+): Promise<T | F> => {
+  try {
+    return await fn()
+  } catch (e) {
+    return isFunction(fallback)
+      ? fallback(e)
+      : fallback
+  }
+}
+
+/** {@link tryCall} 的同步版本 */
+export const tryCallSync = <T, F>(
+  fn: () => T,
+  fallback: F | ((error: unknown) => F),
+): T | F => {
+  try {
+    return fn()
+  } catch (e) {
+    return isFunction(fallback)
+      ? fallback(e)
+      : fallback
+  }
+}
+
+/** 判断函数执行是否成功 */
+export const isSuccess = async (fn: () => MaybePromise<unknown>): Promise<boolean> => {
+  try {
+    await fn()
+    return true
+  } catch {
+    return false
+  }
+}
+
+/** {@link isSuccess} 的同步版本 */
+export const isSuccessSync = (fn: () => unknown): boolean => {
+  try {
+    fn()
+    return true
+  } catch {
+    return false
   }
 }

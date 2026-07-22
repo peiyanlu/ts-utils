@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { once, onceAsync, promisify } from '../../src/index.js'
+import { isSuccess, isSuccessSync, once, onceAsync, promisify, tryCall, tryCallSync } from '../../src/index.js'
 
 
 describe('once', () => {
@@ -157,5 +157,47 @@ describe('promisify', () => {
     })
     
     await expect(fn()).rejects.toThrow('error')
+  })
+})
+
+
+describe('tryCall/tryCallSync', async () => {
+  const log = (value: number) => value
+  const asyncLog = async (value: number) => value
+  const error = () => {throw new Error('error')}
+  const asyncError = async () => {throw new Error('error')}
+  
+  it('tryCall', async () => {
+    expect(await tryCall(() => log(1), undefined)).toBe(1)
+    expect(await tryCall(() => asyncLog(1), undefined)).toBe(1)
+    
+    expect(await tryCall(() => error(), undefined)).toBe(undefined)
+    expect(await tryCall(() => asyncError(), () => undefined)).toBe(undefined)
+  })
+  
+  it('tryCallSync', async () => {
+    expect(tryCallSync(() => log(1), undefined)).toBe(1)
+    expect(tryCallSync(() => error(), null)).toBe(null)
+    expect(tryCallSync(() => error(), () => undefined)).toBe(undefined)
+  })
+})
+
+describe('isSuccess/isSuccessSync', async () => {
+  const log = (value: number) => value
+  const asyncLog = async (value: number) => value
+  const error = () => {throw new Error('error')}
+  const asyncError = async () => {throw new Error('error')}
+  
+  it('isSuccess', async () => {
+    expect(await isSuccess(() => log(1))).toBe(true)
+    expect(await isSuccess(() => asyncLog(1))).toBe(true)
+    
+    expect(await isSuccess(() => error())).toBe(false)
+    expect(await isSuccess(() => asyncError())).toBe(false)
+  })
+  
+  it('isSuccessSync', () => {
+    expect(isSuccessSync(() => log(1))).toBe(true)
+    expect(isSuccessSync(() => error())).toBe(false)
   })
 })

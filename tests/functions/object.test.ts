@@ -1,5 +1,21 @@
 import { expect, it } from 'vitest'
-import { asInstanceOf, mapObject, omit, pick, toString, typedEntries } from '../../src/index.js'
+import {
+  asInstanceOf,
+  deleteProperty,
+  get,
+  getProperty,
+  getTag,
+  mapObject,
+  omit,
+  pathToKeys,
+  pick,
+  set,
+  setProperty,
+  toRawString,
+  toString,
+  typedEntries,
+  unset,
+} from '../../src/index.js'
 
 
 class Foo {}
@@ -24,6 +40,18 @@ it('toString', () => {
   expect(toString([])).toBe('[object Array]')
   expect(toString({})).toBe('[object Object]')
   expect(toString(() => {})).toBe('[object Function]')
+})
+
+it('toRawString', () => {
+  expect(toRawString([])).toBe('[object Array]')
+  expect(toRawString({})).toBe('[object Object]')
+  expect(toRawString(() => {})).toBe('[object Function]')
+})
+
+it('getTag', () => {
+  expect(getTag([])).toBe('Array')
+  expect(getTag({})).toBe('Object')
+  expect(getTag(() => {})).toBe('Function')
 })
 
 it('typedEntries', () => {
@@ -73,4 +101,94 @@ it('mapObject', () => {
   expect(
     mapObject(obj, (k, v) => [ k.toUpperCase(), v ], [ 'a' ]),
   ).toEqual({ A: 1 })
+})
+
+it('pathToKeys', () => {
+  expect(pathToKeys('a')).toStrictEqual([ 'a' ])
+  expect(pathToKeys('.a')).toStrictEqual([ '', 'a' ])
+  expect(pathToKeys('a.')).toStrictEqual([ 'a', '' ])
+  expect(pathToKeys('a.b')).toStrictEqual([ 'a', 'b' ])
+  expect(pathToKeys('a..b')).toStrictEqual([ 'a', '', 'b' ])
+  expect(pathToKeys('a\.b')).toStrictEqual([ 'a', 'b' ])
+  expect(pathToKeys('a\\.b')).toStrictEqual([ 'a.b' ])
+  expect(pathToKeys('a\\\\.b')).toStrictEqual([ 'a\\', 'b' ])
+  expect(pathToKeys('a\\')).toStrictEqual([ 'a\\' ])
+})
+
+it('deleteProperty', () => {
+  const obj = () => ({ a: 1, b: 2, c: { d: 1 } })
+  
+  expect(deleteProperty(obj(), [ 'a' ])).toBe(true)
+  expect(deleteProperty(obj(), [ 'b', 'c' ])).toBe(false)
+  expect(deleteProperty(obj(), [])).toBe(false)
+  expect(deleteProperty(obj(), [ 'c', 'd' ])).toBe(true)
+})
+
+it('unset', () => {
+  const obj = () => ({ a: 1, b: 2, c: { d: 1 } })
+  
+  expect(unset(obj(), '')).toBe(true)
+  expect(unset(obj(), 'a')).toBe(true)
+  expect(unset(obj(), 'b.c')).toBe(false)
+  expect(unset(obj(), 'c.d')).toBe(true)
+})
+
+it('setProperty', () => {
+  const obj = () => ({ c: { d: 5 } })
+  
+  expect(setProperty(obj(), [], 1)).toBe(false)
+  expect(setProperty(obj(), [ 'a' ], 1)).toBe(true)
+  expect(setProperty(obj(), [ 'a', 'b' ], 1)).toBe(true)
+})
+
+it('set', () => {
+  const obj = () => ({ c: { d: 5 } })
+  
+  expect(set(obj(), '', 0)).toBe(true)
+  expect(set(obj(), 'a', 0)).toBe(true)
+  
+  const obj1 = obj()
+  expect(set(obj1, 'a[0]', '0')).toBe(true)
+  expect(obj1).toMatchObject({ c: { d: 5 }, a: [ '0' ] })
+  
+  const obj2 = obj()
+  expect(set(obj2, 'a.0', '0')).toBe(true)
+  expect(obj2).toMatchObject({ c: { d: 5 }, a: { '0': '0' } })
+  
+  expect(set(obj(), 'b.c', 0)).toBe(true)
+  expect(set(obj(), 'c.d', 0)).toBe(true)
+})
+
+it('getProperty', () => {
+  const obj = () => ({ a: 1, b: 2, c: { d: 1 } })
+  
+  expect(getProperty(obj(), [])).toBeUndefined()
+  expect(getProperty(obj(), [ 'b' ])).toBe(2)
+  expect(getProperty(obj(), [ 'a', 'b' ])).toBeUndefined()
+  expect(getProperty(obj(), [ 'c', 'd' ])).toBe(1)
+  expect(getProperty(obj(), [ 'c', 'd', 'e' ])).toBeUndefined()
+})
+
+it('get', () => {
+  const obj = () => ({ a: 1, b: 2, c: { d: 1 } })
+  
+  expect(get(obj(), '')).toBeUndefined()
+  expect(get(obj(), 'b')).toBe(2)
+  expect(get(obj(), 'a.b')).toBeUndefined()
+  expect(get(obj(), 'c.d')).toBe(1)
+  expect(get(obj(), 'c.d.e')).toBeUndefined()
+  
+  const obj1 = { c: { d: 5 }, a: [ '0' ] }
+  expect(get(obj1, 'a[0]')).toBe('0')
+  expect(get(obj1, 'a.0')).toBe('0')
+  expect(get(obj1, 'c.d')).toBe(5)
+  
+  const obj2 = { c: { d: 5 }, a: { '0': '0' } }
+  expect(get(obj2, 'a[0]')).toBe('0')
+  expect(get(obj2, 'a.0')).toBe('0')
+  expect(get(obj2, 'c.d')).toBe(5)
+  
+  const obj3 = { a: [ { b: 1 } ] }
+  expect(get(obj3, 'a.0.b')).toBe(1)
+  expect(get(obj3, 'a[0].b')).toBe(1)
 })

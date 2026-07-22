@@ -1,5 +1,6 @@
-import type { Class } from '../types/index.js'
-import { toString } from './object.js'
+import type { AbstractClass, AnyFunction, Primitive } from '../types/index.js'
+import { isSuccessSync } from './function.js'
+import { getTag } from './object.js'
 
 
 /** 判断一个值是否为 Object（非 null） */
@@ -15,23 +16,73 @@ export const isPlainObject = (v: unknown): v is object => {
   return proto === Object.prototype || proto === null
 }
 
-/** 判断对象是否为空对象（无自身属性） */
-export const isEmptyObject = (v: unknown): boolean => isPlainObject(v) && isZero(Reflect.ownKeys(v).length)
-
-/** 判断字符串是否为空 */
-export const isEmptyString = (v: string): boolean => isZero(v.length)
-
-/** 判断数组是否为空 */
-export const isEmptyArray = <T>(v: readonly T[]): boolean => isZero(v.length)
-
 /** 判断一个值是否为函数 */
-export const isFunction = (v: unknown): v is Function => typeof v === 'function'
+export const isFunction = (v: unknown): v is AnyFunction => typeof v === 'function'
 
 /** 判断一个值是否为同步函数（即 `[object Function]`） */
-export const isSyncFunction = (v: unknown): boolean => toString(v) === '[object Function]'
+export const isSyncFunction = (v: unknown): boolean => getTag(v) === 'Function'
 
 /** 判断一个值是否为异步函数（即 `[object AsyncFunction]`） */
-export const isAsyncFunction = (v: unknown): boolean => toString(v) === '[object AsyncFunction]'
+export const isAsyncFunction = (v: unknown): boolean => getTag(v) === 'AsyncFunction'
+
+/** 安全判断对象是否为特定类实例 */
+export const isInstanceOf = <T>(v: unknown, ctor: AbstractClass<T>): v is T => v instanceof ctor
+
+/** 判断一个值是否为布尔值 */
+export const isBoolean = (v: unknown): v is boolean => typeof v === 'boolean'
+
+/** 判断一个值是否为字符串 */
+export const isString = (v: unknown): v is string => typeof v === 'string'
+
+/** 判断值是否为数字类型 */
+export const isNumber = (v: unknown): v is number => typeof v === 'number' && !Number.isNaN(v)
+
+/** 判断一个值是否为 bigint */
+export const isBigInt = (v: unknown): v is bigint => typeof v === 'bigint'
+
+/** 判断是否为有限数字 */
+export const isFinite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v)
+
+/** 判断是否为整数 */
+export const isInteger = (v: unknown): v is number => Number.isInteger(v)
+
+/** 判断是否为正数 */
+export const isPositive = (v: unknown): v is number => isNumber(v) && v > 0
+
+/** 判断一个值是否为 symbol */
+export const isSymbol = (v: unknown): v is symbol => typeof v === 'symbol'
+
+/** 判断一个值是否为原始类型 */
+export const isPrimitive = (v: unknown): v is Primitive =>
+  v === null || (typeof v !== 'object' && typeof v !== 'function')
+
+/** 判断一个值是否为数组 */
+export const isArray = (v: unknown): v is unknown[] => Array.isArray(v)
+
+/** 判断一个值是否为有效日期 */
+export const isDate = (v: unknown): v is Date => isInstanceOf(v, Date) && !Number.isNaN(v.getTime())
+
+/** 判断一个值是否为正则 */
+export const isRegExp = (v: unknown): v is RegExp => isInstanceOf(v, RegExp)
+
+/** 判断一个值是否为 Promise */
+export const isPromise = (v: unknown): v is Promise<unknown> => isObject(v) && isFunction((v as any).then)
+
+/** 判断一个值是否可以使用 new 调用 */
+export const isNewable = (v: unknown): boolean => {
+  if (!isFunction(v)) return false
+  return isSuccessSync(() => Reflect.construct(Object, [], v))
+}
+
+/** 判断一个值是否为 Map */
+export const isMap = (v: unknown): v is Map<unknown, unknown> => isInstanceOf(v, Map)
+
+/** 判断一个值是否为 Set */
+export const isSet = (v: unknown): v is Set<unknown> => isInstanceOf(v, Set)
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 
 /** undefined 值判断 */
 export const isUndefined = (v: unknown): v is undefined => undefined === v
@@ -39,15 +90,26 @@ export const isUndefined = (v: unknown): v is undefined => undefined === v
 /** null 值判断 */
 export const isNull = (v: unknown): v is null => null === v
 
+/** 断值不是 null/undefined */
+export const isNonNullable = (v: unknown): v is {} => v !== null && v !== undefined
+
+/** 断值是不是 null/undefined */
+export const isNullable = (v: unknown): v is null | undefined => v === null || v === undefined
+
 /** 0 值判断 */
 export const isZero = (v: number): v is 0 => 0 === v
 
 /** -1 值判断 */
 export const isIndex = (v: number): boolean => -1 < v
 
-/** 断值不是 null/undefined */
-export const isNonNullable = <T>(v: T): v is NonNullable<T> => v !== null && v !== undefined
+/** 判断对象是否为空对象（无自身属性） */
+export const isEmptyObject = (v: unknown): boolean => isPlainObject(v) && isZero(Reflect.ownKeys(v).length)
 
-/** 安全判断对象是否为特定类实例 */
-export const isInstanceOf = <T>(obj: unknown, constructor: Class<T>): obj is T =>
-  obj instanceof constructor
+/** 判断字符串是否为空 */
+export const isEmptyString = (v: unknown): boolean => isString(v) && isZero(v.length)
+
+/** 判断数组是否为空 */
+export const isEmptyArray = (v: readonly unknown[]): boolean => isZero(v.length)
+
+/** 判断字符串是否为空白 */
+export const isBlankString = (v: unknown): boolean => isString(v) && isZero(v.trim().length)

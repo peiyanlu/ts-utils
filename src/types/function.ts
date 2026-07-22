@@ -10,8 +10,11 @@ export type AsyncFunction = (...args: any[]) => Promise<any>;
 /** 无参数回调 */
 export type Callback = () => void;
 
-/** 类构造函数类型 */
+/** 类构造函数类型（可实例化） */
 export type Class<T> = new (...args: any[]) => T;
+
+/** 类构造函数类型（支持抽象类） */
+export type AbstractClass<T> = abstract new (...args: any[]) => T;
 
 /** 同步或异步值 */
 export type MaybePromise<T> = T | Promise<T>;
