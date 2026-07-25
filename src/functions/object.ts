@@ -142,16 +142,30 @@ export const deleteProperty = (
   const last = keys.at(-1)
   if (isUndefined(last)) return false
   
+  const arrKey = /^\[(\d+)]$/
+  
   let target: any = object
   for (const key of keys.slice(0, -1)) {
-    target = target?.[key]
+    if (arrKey.test(key)) {
+      const index = key.match(arrKey)?.[1]!
+      target = target[index]
+    } else {
+      target = target[key]
+    }
     
     if (!isObject(target)) {
       return false
     }
   }
   
-  return delete target[last]
+  if (arrKey.test(last)) {
+    const index = last.match(arrKey)?.[1]!
+    delete target[index]
+  } else {
+    delete target[last]
+  }
+  
+  return true
 }
 
 /** 根据点分隔路径删除对象的嵌套属性 */

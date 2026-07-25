@@ -122,6 +122,18 @@ it('deleteProperty', () => {
   expect(deleteProperty(obj(), [ 'b', 'c' ])).toBe(false)
   expect(deleteProperty(obj(), [])).toBe(false)
   expect(deleteProperty(obj(), [ 'c', 'd' ])).toBe(true)
+  
+  const obj1 = { c: { d: 5 }, a: [ '0' ] }
+  expect(deleteProperty(obj1, [ 'a', '[0]' ])).toBe(true)
+  expect(obj1).toMatchObject({ c: { d: 5 }, a: Array(1) })
+  expect(deleteProperty(obj1, [ 'a', '0' ])).toBe(true)
+  expect(obj1).toMatchObject({ c: { d: 5 }, a: Array(1) })
+  
+  const obj2 = { c: { d: 5 }, a: { '0': '0' } }
+  expect(deleteProperty(obj2, [ 'a', '[0]' ])).toBe(true)
+  expect(obj2).toMatchObject({ c: { d: 5 }, a: {} })
+  expect(deleteProperty(obj2, [ 'a', '0' ])).toBe(true)
+  expect(obj2).toMatchObject({ c: { d: 5 }, a: {} })
 })
 
 it('unset', () => {
@@ -131,6 +143,28 @@ it('unset', () => {
   expect(unset(obj(), 'a')).toBe(true)
   expect(unset(obj(), 'b.c')).toBe(false)
   expect(unset(obj(), 'c.d')).toBe(true)
+  
+  const obj1 = { c: { d: 5 }, a: [ '0' ] }
+  expect(unset(obj1, 'a[0]')).toBe(true)
+  expect(obj1).toMatchObject({ c: { d: 5 }, a: Array(1) })
+  expect(unset(obj1, 'a.0')).toBe(true)
+  expect(obj1).toMatchObject({ c: { d: 5 }, a: Array(1) })
+  
+  const obj2 = { c: { d: 5 }, a: { '0': '0' } }
+  expect(unset(obj2, 'a[0]')).toBe(true)
+  expect(obj2).toMatchObject({ c: { d: 5 }, a: {} })
+  expect(unset(obj2, 'a.0')).toBe(true)
+  expect(obj2).toMatchObject({ c: { d: 5 }, a: {} })
+  expect(unset(obj2, 'c.d')).toBe(true)
+  expect(obj2).toMatchObject({ c: {}, a: {} })
+  
+  const obj3 = { a: [ { b: 1 } ] }
+  expect(unset(obj3, 'a[0].b')).toBe(true)
+  expect(obj3).toMatchObject({ a: [ {} ] })
+  
+  const obj4 = { a: [ { b: 1 } ] }
+  expect(unset(obj4, 'a.0.b')).toBe(true)
+  expect(obj4).toMatchObject({ a: [ {} ] })
 })
 
 it('setProperty', () => {
@@ -139,6 +173,14 @@ it('setProperty', () => {
   expect(setProperty(obj(), [], 1)).toBe(false)
   expect(setProperty(obj(), [ 'a' ], 1)).toBe(true)
   expect(setProperty(obj(), [ 'a', 'b' ], 1)).toBe(true)
+  
+  const obj1 = obj()
+  expect(setProperty(obj1, [ 'a', '[0]' ], '0')).toBe(true)
+  expect(obj1).toMatchObject({ c: { d: 5 }, a: [ '0' ] })
+  
+  const obj2 = obj()
+  expect(setProperty(obj2, [ 'a', '0' ], '0')).toBe(true)
+  expect(obj2).toMatchObject({ c: { d: 5 }, a: { '0': '0' } })
 })
 
 it('set', () => {
@@ -167,6 +209,14 @@ it('getProperty', () => {
   expect(getProperty(obj(), [ 'a', 'b' ])).toBeUndefined()
   expect(getProperty(obj(), [ 'c', 'd' ])).toBe(1)
   expect(getProperty(obj(), [ 'c', 'd', 'e' ])).toBeUndefined()
+  
+  const obj1 = { c: { d: 5 }, a: [ '0' ] }
+  expect(getProperty(obj1, [ 'a', '[0]' ])).toBe('0')
+  expect(getProperty(obj1, [ 'a', '0' ])).toBe('0')
+  
+  const obj2 = { c: { d: 5 }, a: { '0': '0' } }
+  expect(getProperty(obj2, [ 'a', '[0]' ])).toBe('0')
+  expect(getProperty(obj2, [ 'a', '0' ])).toBe('0')
 })
 
 it('get', () => {
