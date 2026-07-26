@@ -3,27 +3,27 @@ import { isBetween, randomInt } from './number.js'
 
 export namespace channel {
   /** [0, 255] */
-  export const random = () => randomInt(0, 255)
+  export const random: () => number = () => randomInt(0, 255)
   
   /** [0, 140] */
-  export const dark = () => randomInt(0, 140)
+  export const dark: () => number = () => randomInt(0, 140)
   
   /** [140, 255] */
-  export const light = () => randomInt(140, 255)
+  export const light: () => number = () => randomInt(140, 255)
 }
 
 export namespace alpha {
   /** [0, 255] 转为 [0, 1] */
-  export const random = () => randomInt(0, 255)
+  export const random: () => number = () => randomInt(0, 255)
   
   /** [64, 255] 转为 [0.25, 1] */
-  export const visible = () => randomInt(64, 255)
+  export const visible: () => number = () => randomInt(64, 255)
   
   /** [128, 255] 转为 [0.5, 1] */
-  export const opaque = () => randomInt(128, 255)
+  export const opaque: () => number = () => randomInt(128, 255)
   
   /** [192, 255] 转为 [0.75, 1] */
-  export const solid = () => randomInt(192, 255)
+  export const solid: () => number = () => randomInt(192, 255)
 }
 
 
@@ -110,7 +110,7 @@ export namespace rgb {
   }
   
   /** 是否是 rgba 颜色 */
-  export const is = (color: string) => {
+  export const is = (color: string): boolean => {
     const match = color.match(/^rgb\((.+)\)$/i)
     if (!match) return false
     
@@ -144,7 +144,7 @@ export namespace rgba {
   }
   
   /** 是否是 rgba 颜色 */
-  export const is = (color: string) => {
+  export const is = (color: string): boolean => {
     const match = color.match(/^rgba\((.+)\)$/i)
     if (!match) return false
     
