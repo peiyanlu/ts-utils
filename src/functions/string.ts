@@ -28,3 +28,24 @@ export const collapseBlankLines = (str: string, opts: { threshold?: number; pres
 
 /** 生成一个或多个换行 */
 export const newline = (n = 1): string => '\n'.repeat(Math.abs(n))
+
+/** 消除缩进 */
+export const dedent = (str: string): string => {
+  const lines = str.split('\n')
+  
+  const indent = lines
+    .filter(line => line.trim())
+    .reduce(
+      (min, line) => Math.min(min, line.search(/\S/)),
+      Infinity,
+    )
+  
+  if (!Number.isFinite(indent)) {
+    return ''
+  }
+  
+  return lines
+    .map(line => line.slice(indent))
+    .join('\n')
+    .trim()
+}

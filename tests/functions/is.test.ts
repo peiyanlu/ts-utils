@@ -6,8 +6,11 @@ import {
   isBlankString,
   isBoolean,
   isDate,
+  isEmpty,
   isEmptyArray,
+  isEmptyMap,
   isEmptyObject,
+  isEmptySet,
   isEmptyString,
   isFinite,
   isFunction,
@@ -17,6 +20,7 @@ import {
   isMap,
   isNewable,
   isNonNullable,
+  isNotEmpty,
   isNotObject,
   isNull,
   isNullable,
@@ -87,8 +91,10 @@ describe('type', () => {
   })
   
   it('isInstanceOf', () => {
-    const foo = new Foo()
-    expect(isInstanceOf(foo, Foo)).toBe(true)
+    class Boo extends Foo {}
+    
+    expect(isInstanceOf(new Foo(), Foo)).toBe(true)
+    expect(isInstanceOf(new Boo(), Foo)).toBe(true)
     expect(isInstanceOf({}, Foo)).toBe(false)
   })
   
@@ -255,16 +261,42 @@ describe('value', () => {
     expect(isEmptyArray(new Array(1))).toBe(false)
   })
   
-  it('isInstanceOf', () => {
-    class Boo extends Foo {}
-    
-    expect(isInstanceOf(new Foo(), Foo)).toBe(true)
-    expect(isInstanceOf(new Boo(), Foo)).toBe(true)
-    expect(isInstanceOf({}, Foo)).toBe(false)
-  })
-  
   it('isBlankString', () => {
     expect(isBlankString(' ')).toBe(true)
     expect(isBlankString('')).toBe(true)
+  })
+  
+  it('isEmptyMap', () => {
+    expect(isEmptyMap(new Map)).toBe(true)
+    expect(isEmptyMap(new Map([ [ 1, 2 ] ]))).toBe(false)
+    expect(isEmptyMap(new Map([ [ 1, 2 ], [ 3, 4 ] ]))).toBe(false)
+  })
+  
+  it('isEmptySet', () => {
+    expect(isEmptySet(new Set)).toBe(true)
+    expect(isEmptySet(new Set([ 1 ]))).toBe(false)
+    expect(isEmptySet(new Set([ 1, 2 ]))).toBe(false)
+  })
+  
+  it('isEmpty', () => {
+    expect(isEmpty(null)).toBe(true)
+    expect(isEmpty(undefined)).toBe(true)
+    expect(isEmpty('')).toBe(true)
+    expect(isEmpty([])).toBe(true)
+    expect(isEmpty({})).toBe(true)
+    expect(isEmpty(new Set())).toBe(true)
+    expect(isEmpty(new Map())).toBe(true)
+    expect(isEmpty(new Foo())).toBe(false)
+  })
+  
+  it('isNotEmpty', () => {
+    expect(isNotEmpty(null)).toBe(false)
+    expect(isNotEmpty(undefined)).toBe(false)
+    expect(isNotEmpty('')).toBe(false)
+    expect(isNotEmpty([])).toBe(false)
+    expect(isNotEmpty({})).toBe(false)
+    expect(isNotEmpty(new Set())).toBe(false)
+    expect(isNotEmpty(new Map())).toBe(false)
+    expect(isNotEmpty(new Foo())).toBe(true)
   })
 })

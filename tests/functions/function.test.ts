@@ -58,7 +58,6 @@ describe('once', () => {
   })
 })
 
-
 describe('onceAsync', () => {
   it('onceAsync', async () => {
     let count = 0
@@ -129,7 +128,6 @@ describe('onceAsync', () => {
   })
 })
 
-
 describe('promisify', () => {
   it('promisify sync', async () => {
     const fn = promisify((a: number, b: number) => a + b)
@@ -159,7 +157,6 @@ describe('promisify', () => {
     await expect(fn()).rejects.toThrow('error')
   })
 })
-
 
 describe('tryCall/tryCallSync', async () => {
   const log = (value: number) => value

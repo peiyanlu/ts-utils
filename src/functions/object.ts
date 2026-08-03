@@ -242,3 +242,8 @@ export const getProperty = <V>(
 export const get = <V>(object: Dict, path: string): V | undefined => {
   return getProperty<V>(object, pathToKeys(path))
 }
+
+/** 克隆实例 */
+export const cloneInstance = <T>(inst: T): T => {
+  return Object.assign(Object.create(Object.getPrototypeOf(inst)), inst)
+}

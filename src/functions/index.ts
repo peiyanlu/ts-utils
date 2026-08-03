@@ -19,3 +19,5 @@ export * from './async.js'
 export * from './url.js'
 
 export * from './color.js'
+
+export * from './error.js'

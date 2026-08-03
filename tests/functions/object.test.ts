@@ -1,6 +1,7 @@
-import { expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
   asInstanceOf,
+  cloneInstance,
   deleteProperty,
   get,
   getProperty,
@@ -241,4 +242,23 @@ it('get', () => {
   const obj3 = { a: [ { b: 1 } ] }
   expect(get(obj3, 'a.0.b')).toBe(1)
   expect(get(obj3, 'a[0].b')).toBe(1)
+})
+
+describe('cloneInstance', () => {
+  class Animal {
+    walk() {
+      return 'walk'
+    }
+    
+    run() {
+      return 'run'
+    }
+  }
+  
+  const animal = new Animal()
+  
+  it('should clone all', () => {
+    expect(cloneInstance(animal).run()).toBe('run')
+    expect(cloneInstance(animal).walk()).toBe('walk')
+  })
 })
