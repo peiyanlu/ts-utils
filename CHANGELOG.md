@@ -1,3 +1,18 @@
+## <small>[0.0.12](https://github.com/peiyanlu/ts-utils/compare/v0.0.11...v0.0.12) (2026-08-04)</small>
+
+### ✨ 新功能
+
+* 工具补充 ([cd566b5](https://github.com/peiyanlu/ts-utils/commit/cd566b55121210fedcbbebaa1b52c2710774464c))
+* 添加颜色和 url 工具 ([fe2e41f](https://github.com/peiyanlu/ts-utils/commit/fe2e41fedd4437eb5eb0498cd9ad539dafdfa4c7))
+
+### 🐛 Bug 修复
+
+* 添加显式返回类型 ([66f490a](https://github.com/peiyanlu/ts-utils/commit/66f490a2905409c8c0ccd89e263694bd64063c8a))
+
+### 📝 文档
+
+* 更新项目主页链接和徽章显示 ([3f77f23](https://github.com/peiyanlu/ts-utils/commit/3f77f237bff33cb64a1781f3bb9d3cba44f59200))
+
 ## <small>[0.0.11](https://github.com/peiyanlu/ts-utils/compare/v0.0.10...v0.0.11) (2026-07-22)</small>
 
 ### ✨ 新功能
